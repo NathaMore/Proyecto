@@ -141,3 +141,53 @@ plt.title("Matriz de correlación", fontsize=14)
 plt.show()
 
 # %%
+#-------------------------- Preparación de datos --------------------------
+#Eliminacion de outliers en el reassignment_count:
+Q1_rea= inc["reassignment_count"].quantile(0.25)
+Q3_rea = inc["reassignment_count"].quantile(0.75)
+IQR_rea = Q3_rea - Q1_rea
+
+Limite_sup_rea = Q3_rea + 1.5 * IQR_rea
+inc_final = inc[inc["reassignment_count"] <= Limite_sup_rea]
+print(len(inc_final))
+
+plt.figure(figsize=(8,5))
+sns.histplot(inc_final["reassignment_count"])
+plt.title("Numero de reasgnamientos", fontsize=14)
+plt.ylabel("Frecuencia")
+plt.show()
+
+
+#Eliminacion de outliers en el sys_mod_count:
+Q1_sys= inc["sys_mod_count"].quantile(0.25)
+Q3_sys = inc["sys_mod_count"].quantile(0.75)
+IQR_sys = Q3_sys - Q1_sys
+
+Limite_sup_sys = Q3_sys + 1.5 * IQR_sys
+inc_final = inc_final[inc_final["sys_mod_count"] <= Limite_sup_sys]
+print(len(inc_final))
+
+plt.figure(figsize=(8,5))
+sns.histplot(inc_final["sys_mod_count"])
+plt.title("Numero de actualizaciones", fontsize=14)
+plt.ylabel("Frecuencia")
+plt.show()
+
+
+#Eliminacion de outliers en el tiempo:
+Q1_time = inc["time_min"].quantile(0.25)
+Q3_time = inc["time_min"].quantile(0.75)
+IQR_time = Q3_time-Q1_time
+
+Limite_sup_time = Q3_time + 1.5 * IQR_time
+inc_final = inc_final[inc_final["time_min"] <= Limite_sup_time]
+print(len(inc_final))
+
+plt.figure(figsize=(8,5))
+sns.histplot(inc_final["time_min"])
+plt.title("Tiempos de resolución", fontsize=14)
+plt.xlabel("Tiempo (minutos)")
+plt.ylabel("Frecuencia")
+plt.show()
+
+# %%
