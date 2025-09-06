@@ -118,6 +118,7 @@ map_urgency = {
     "3 - Low":3
 }
 inc["urgency_ord"] = inc["urgency"].map(map_urgency)
+inc["impact_ord"] = inc["impact"].map(map_urgency)
 
 map_notify ={
     "Do Not Notify":0,
@@ -130,9 +131,10 @@ map_sla ={
     "false":0
 }
 inc["sla_ord"] = inc["made_sla"].map(map_sla)
-inc["know_ord"] = inc["knowledge"].map(map_sla)
 
-vars_interes = ["urgency_ord", "notify_ord", "priority_ord", "reassignment_count", "reopen_count", "sys_mod_count", "made_sla", "knowledge", "time_min"]
+inc["know_ord"] = inc["knowledge"].astype(int)
+
+vars_interes = ["urgency_ord","impact_ord","priority_ord","notify_ord", "reassignment_count", "reopen_count", "sys_mod_count", "made_sla", "know_ord", "time_min"]
 corr = inc[vars_interes].corr()
 
 plt.figure(figsize=(8,6))
@@ -190,4 +192,23 @@ plt.xlabel("Tiempo (minutos)")
 plt.ylabel("Frecuencia")
 plt.show()
 
+# %%
+#Reordenamiento de columnas inc_final
+inc_final = inc_final.drop(["active", "made_sla","caller_id",
+                            "opened_by","sys_created_by", "sys_created_at",
+                            "sys_updated_by","sys_updated_at","contact_type",
+                            "location","category", "subcategory","u_symptom",
+                            "cmdb_ci","priority","assignment_group",
+                            "assigned_to","u_priority_confirmation",
+                            "notify","problem_id","rfc","vendor","caused_by",
+                            "closed_code","resolved_by","resolved_at","problem",
+                            "sla_ord","notify_ord"
+                            ], axis=1)
+
+cols = ["number", "opened_at", "closed_at", "incident_state",
+        "time","time_min","reassignment_count","reopen_count",
+        "sys_mod_count","impact","impact_ord",
+        "urgency","urgency_ord","knowledge","know_ord"]
+inc_final = inc_final[cols]
+inc_final
 # %%
