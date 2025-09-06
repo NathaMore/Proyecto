@@ -101,3 +101,43 @@ for i, col in enumerate(cat_cols, 1):
     plt.xticks(fontsize=40)
 plt.tight_layout()
 plt.show()
+
+# %%
+#Correlaciones con la variable de interés
+map_priority = {
+    "1 - Critical": 1,
+    "2 - High": 2,
+    "3 - Moderate": 3,
+    "4 - Low": 4
+}
+inc["priority_ord"] = inc["priority"].map(map_priority)
+
+map_urgency = {
+    "1 - High":1,
+    "2 - Medium":2,
+    "3 - Low":3
+}
+inc["urgency_ord"] = inc["urgency"].map(map_urgency)
+
+map_notify ={
+    "Do Not Notify":0,
+    "Send Email":1
+}
+inc["notify_ord"] = inc["notify"].map(map_notify)
+
+map_sla ={
+    "true":1,
+    "false":0
+}
+inc["sla_ord"] = inc["made_sla"].map(map_sla)
+inc["know_ord"] = inc["knowledge"].map(map_sla)
+
+vars_interes = ["urgency_ord", "notify_ord", "priority_ord", "reassignment_count", "reopen_count", "sys_mod_count", "made_sla", "knowledge", "time_min"]
+corr = inc[vars_interes].corr()
+
+plt.figure(figsize=(8,6))
+sns.heatmap(corr, annot=True, cmap="coolwarm", center=0, fmt=".2f")
+plt.title("Matriz de correlación", fontsize=14)
+plt.show()
+
+# %%
