@@ -67,7 +67,7 @@ print(len(inc))
 
 # %%
 #Exploración de variables numéricas-------------
-print(inc.describe(include = ["int64", "float64"]))
+# print(inc.describe(include = ["int64", "float64"]))
 num_cols = inc.select_dtypes(include = ["int64", "float64"]).columns
 num_cols = [col for col in num_cols if col != "time_min"]
 
@@ -78,6 +78,7 @@ for i, col in enumerate(num_cols, 1):
     plt.title(f"Histograma de {col}", fontsize= 40)
     plt.xlabel(col)
     plt.ylabel("Frecuencia")
+    plt.xticks(fontsize=40)
 plt.tight_layout()
 plt.show()
 
@@ -85,4 +86,18 @@ plt.hist(inc["time_min"], bins=50, edgecolor="black")
 plt.xlabel("Minutos")
 plt.ylabel("Frecuencia")
 plt.title("Distribución de time_min")
+plt.show()
+
+#%%
+# #Exploración de variables categoricas-------------
+cat_cols = ["contact_type","urgency", "notify","priority", "impact", "knowledge"]
+n = len(cat_cols)
+
+plt.figure(figsize=(40, 50))
+for i, col in enumerate(cat_cols, 1):
+    plt.subplot(3, 2, i)
+    sns.boxplot(x=col, y=np.log1p(inc["time_min"]), data=inc, color="yellow")
+    plt.title(col, fontsize=40)
+    plt.xticks(fontsize=40)
+plt.tight_layout()
 plt.show()
