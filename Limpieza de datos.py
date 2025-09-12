@@ -82,6 +82,17 @@ for i, col in enumerate(num_cols, 1):
 plt.tight_layout()
 plt.show()
 
+plt.figure(figsize=(30, 5 * len(num_cols)))
+for i, col in enumerate(num_cols, 1):
+    plt.subplot(len(num_cols), 1, i)
+    plt.scatter(inc[col], inc["time_min"], alpha=0.5)
+    plt.title(f"{col} vs time_min", fontsize=20)
+    plt.xlabel(col)
+    plt.ylabel("time_min")
+plt.tight_layout()
+plt.show()
+
+
 plt.hist(inc["time_min"], bins=50, edgecolor="black")
 plt.xlabel("Minutos")
 plt.ylabel("Frecuencia")
