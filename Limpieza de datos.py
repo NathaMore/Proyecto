@@ -223,3 +223,7 @@ cols = ["number", "opened_at", "closed_at", "incident_state",
 inc_final = inc_final[cols]
 inc_final
 # %%
+
+# exportar dataset limpio
+inc_final.to_csv("inc_final.csv", index=False)
+print("Dataset limpio exportado como inc_final.csv") 
