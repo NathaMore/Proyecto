@@ -17,13 +17,16 @@ data_orig = data_orig.drop_duplicates(subset=['number'], keep='last')
 
 data = pd.merge(data, data_orig, on='number', how='left')
 
+# Asegurar que la columna 'knowledge' sea numérica (0/1) para el modelo
+data['knowledge'] = data['knowledge'].astype(int)
+
 #endregion
 
 #region Entrenamiento del Modelo de Machine Learning
 # Usamos las mismas variables del modelo de regresión más eficiente (RandomForest)
 features = [
-    "reassignment_count", "reopen_count", "sys_mod_count",
-    "impact_ord", "urgency_ord", "know_ord"
+    'reassignment_count', 'reopen_count', 'sys_mod_count',
+    'impact_ord', 'knowledge'
 ]
 target = "time_min"
 model_data = data.dropna(subset=features + [target])
@@ -105,9 +108,6 @@ app.layout = html.Div(style={'backgroundColor': '#f2f2f2', 'fontFamily': 'Arial,
                     html.Br(), html.Br(),
                     html.Label("Impacto:"),
                     dcc.Dropdown(id='input-impact', options=[{'label': '2 - Medium', 'value': 2}, {'label': '3 - Low', 'value': 3}, {'label': '1 - High', 'value': 1}], value=2),
-                    html.Br(),
-                    html.Label("Urgencia:"),
-                    dcc.Dropdown(id='input-urgency', options=[{'label': '2 - Medium', 'value': 2}, {'label': '3 - Low', 'value': 3}, {'label': '1 - High', 'value': 1}], value=2),
                     html.Br(),
                     html.Label("Conocimiento usado:"),
                     dcc.Dropdown(id='input-knowledge', options=[{'label': 'Sí', 'value': 1}, {'label': 'No', 'value': 0}], value=1),
@@ -242,16 +242,15 @@ def update_tab2(start_date, end_date, dropdown_value):
      State('input-reopen', 'value'),
      State('input-sys-mod', 'value'),
      State('input-impact', 'value'),
-     State('input-urgency', 'value'),
      State('input-knowledge', 'value')],
     prevent_initial_call=True
 )
 
 #region Prediccion dias
-def update_prediction_text(n_clicks, reassignment, reopen, sys_mod, impact, urgency, knowledge):
+def update_prediction_text(n_clicks, reassignment, reopen, sys_mod, impact, knowledge):
     
     input_df = pd.DataFrame(
-        [[reassignment, reopen, sys_mod, impact, urgency, knowledge]],
+        [[reassignment, reopen, sys_mod, impact, knowledge]],
         columns=features
     )
     
@@ -289,6 +288,7 @@ def update_importance_graph(tab_value, n_clicks):
         return fig_importance
     
     raise dash.exceptions.PreventUpdate
+#endregion
 
 if __name__ == '__main__':
     app.run(debug=True)
