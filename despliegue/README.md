@@ -1,4 +1,4 @@
-# acá se encuentra la guía para el despliegue en AWS EC2
+# Acá se encuentra la guía para el despliegue en AWS EC2
 
 # 1. Crear la instancia
 ingrese a AWS -> EC2 -> -> Lance una instancia asignando un nombre adeacuado, 
