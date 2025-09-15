@@ -92,12 +92,15 @@ for i, col in enumerate(num_cols, 1):
 plt.tight_layout()
 plt.show()
 
-
+#%%
+#Exploración variable de interes
 plt.hist(inc["time_min"], bins=50, edgecolor="black")
 plt.xlabel("Minutos")
 plt.ylabel("Frecuencia")
 plt.title("Distribución de time_min")
 plt.show()
+
+inc["time_min"].describe()
 
 #%%
 # #Exploración de variables categoricas-------------
